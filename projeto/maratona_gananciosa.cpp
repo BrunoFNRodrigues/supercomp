@@ -39,31 +39,42 @@ int main(){
 
     vector<int> dia(24, 0);
     int tempo = 24;
-    cout << "[0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3]" << endl;
+    
     for(auto& el: lista){
         if(categorias[el.categoria-1] != 0){
-            if(tempo - (el.fim - el.inicio) >= 0){
-                if(count(dia.begin()+el.inicio, dia.end()-(24-el.fim), 0) == (el.fim - el.inicio)){
-                    for (int i = el.inicio; i < el.fim; i++)
-                    {
-                        dia[i] = el.id;
-                    }
+            if(tempo - abs(el.fim - el.inicio) >= 0){
+                if(el.fim > el.inicio){
+                    if(count(dia.begin()+el.inicio, dia.end()-(24-el.fim), 0) == (el.fim - el.inicio)){
+                        for (int i = el.inicio; i < el.fim; i++)
+                        {
+                            dia[i] = el.id;
+                        }
 
-                    maratona.push_back(el);
-                    tempo -= (el.fim - el.inicio); 
-                    cout << "[";
-                    for(auto& el:dia){
-                    cout << el  <<" ";
+                        maratona.push_back(el);
+                        tempo -= (el.fim - el.inicio); 
+                        categorias[el.categoria-1]--;
+                    }                    
+                } else {
+                    if(count(dia.begin()+el.inicio, dia.end(), 0) == (24 - el.inicio)){
+                        for (int i = el.inicio; i < 24; i++)
+                        {
+                            dia[i] = el.id;
+                        }
+
+                        maratona.push_back(el);
+                        tempo -= (el.fim - el.inicio); 
+                        categorias[el.categoria-1]--;
                     }
-                    cout << "]" << endl;
                 }
-
             }
-            categorias[el.categoria-1]--;
         }
 
     }    
-    
+    cout << "[ ";
+    for(auto& el:dia){
+    cout << el  <<" ";
+    }
+    cout << "]" << endl;
 
 
 }
