@@ -71,10 +71,14 @@ int main(){
 
     }    
     cout << "[ ";
-    for(auto& el:dia){
+        for(auto& el:dia){
     cout << el  <<" ";
     }
     cout << "]" << endl;
 
+    for(auto& el:maratona){
+        cout << el.id << " ";
+    }
+    cout << endl;
 
 }
