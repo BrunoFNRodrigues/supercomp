@@ -6,9 +6,9 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    for (int i = 0; i < atoi(argv[1]); i++)
+    for (int i = 1; i < atoi(argv[1]); i+=1000)
     {
-        for (int j = 0; j < atoi(argv[1]); j++)
+        for (int j = 1; j < atoi(argv[1]); j+=1000)
         {
             int n = i;
             int m = j;
