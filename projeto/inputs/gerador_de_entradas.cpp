@@ -6,9 +6,9 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    for (int i = 1; i < atoi(argv[1]); i+=1000)
+    for (int i = 1000; i < atoi(argv[1]); i+=1000)
     {
-        for (int j = 1; j < atoi(argv[1]); j+=1000)
+        for (int j = 1; j < 101; j++)
         {
             int n = i;
             int m = j;
@@ -40,8 +40,8 @@ int main(int argc, char *argv[]) {
                 int categoria = distribution_cat(generator);
 
                 inputFile << hora_inicio << " " << hora_fim << " " << categoria << endl;
-                inputFile.close();
             }
+            inputFile.close();
         }   
     }
     return 0;
