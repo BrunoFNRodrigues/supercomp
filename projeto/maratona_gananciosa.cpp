@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <random>
 #include <chrono>
+#include <fstream>
 #include "valarray"
 
 using namespace std;
@@ -80,5 +81,11 @@ int main(){
         cout << el.id << " ";
     }
     cout << endl;
+
+    ofstream file;
+    file.open ("gananciosa.csv", ios_base::app);
+    file << "n_filmes,n_categorias,t_restante,t_execucao,n_filmes,\n";
+    file << to_string(n)+","+to_string(c)+","+to_string(tempo)+","+"100"+","+to_string(maratona.size());
+    file.close();
 
 }
