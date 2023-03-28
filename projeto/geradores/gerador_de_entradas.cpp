@@ -6,7 +6,7 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    for (int i = 1000; i < atoi(argv[1]); i+=1000)
+    for (int i = 1000; i < atoi(argv[1])+1; i+=1000)
     {
         for (int j = 1; j < 101; j++)
         {
@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
             int m = j;
 
             ofstream inputFile;
-            inputFile.open("input_"+to_string(n)+"_"+to_string(m)+".txt");
+            inputFile.open("./../inputs/input_"+to_string(n)+"_"+to_string(m)+".txt");
             inputFile << n << " " << m << endl;
 
             unsigned seed = chrono::system_clock::now().time_since_epoch().count();
