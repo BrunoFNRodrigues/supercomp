@@ -8,20 +8,20 @@ using namespace std;
 int main(int argc, char *argv[]) {
     for (int i = 1000; i < atoi(argv[1])+1; i+=1000)
     {
-        for (int j = 1; j < 101; j++)
+        for (int j = 1; j < 13; j++)
         {
             int n = i;
-            int m = j;
+            int m = 20;
 
             ofstream inputFile;
-            inputFile.open("./../inputs/input_"+to_string(n)+"_"+to_string(m)+".txt");
+            inputFile.open("./../inputs/input_"+to_string(n)+"_"+to_string(j)+".txt");
             inputFile << n << " " << m << endl;
 
             unsigned seed = chrono::system_clock::now().time_since_epoch().count();
             default_random_engine generator (seed);
 
             // Definindo distribuição normal com média de 3 e desvio padrão de 1
-            normal_distribution<double> distribution_dif(3, 1.0);
+            normal_distribution<double> distribution_dif(j, 1.0);
 
             uniform_int_distribution<int> distribution_hr(0, 23);
             uniform_int_distribution<int> distribution_cat(1, m);

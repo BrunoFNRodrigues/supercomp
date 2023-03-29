@@ -3,11 +3,12 @@
 #include <algorithm>
 #include <random>
 #include <chrono>
-#include "valarray"
+#include <fstream>
+#include <time.h>
 
 using namespace std;
 
-int main(){
+int main(int argc, char *argv[]){
     struct filme{
         int id;
         int inicio;
@@ -16,7 +17,6 @@ int main(){
     };
 
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-    //int seed = 10;
     std::default_random_engine generator (seed);
     std::uniform_int_distribution<int> distribution(0.0,1.0);
 
@@ -49,6 +49,9 @@ int main(){
 
     vector<int> dia(24, 0);
     int tempo = 24;
+
+    clock_t t = clock();
+
     int j = 0;
     for(auto& el: lista){
         if(categorias[el.categoria-1] != 0){
@@ -92,18 +95,23 @@ int main(){
         }
 
     }
+    t = clock() - t;   
 
-    j = 0;
-    for(auto& el:dia){
-        cout << j << "h00 -> " << el  << endl;
-        j++;
+    cout << "[ ";
+        for(auto& el:dia){
+    cout << el  <<" ";
     }
+    cout << "]" << endl;
 
-
-    sort(maratona.begin(), maratona.end(), [](auto& i, auto& j){return i.id < j.id;});
     for(auto& el:maratona){
         cout << el.id << " ";
     }
     cout << endl;
+
+   string arquivo = argv[1];
+    ofstream file;
+    file.open ("./../resultados/"+arquivo+".csv", ios_base::app);
+    file << to_string(n)+","+to_string(c)+","+to_string(tempo)+","+to_string(((float)t)/CLOCKS_PER_SEC)+","+to_string(maratona.size()) << endl;
+    file.close();
 
     }    

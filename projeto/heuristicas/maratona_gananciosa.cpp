@@ -8,7 +8,7 @@
 
 using namespace std;
 
-int main(){
+int main(int argc, char *argv[]){
     struct filme{
         int id;
         int inicio;
@@ -76,9 +76,9 @@ int main(){
         cout << el.id << " ";
     }
     cout << endl;
-
+    string arquivo = argv[1];
     ofstream file;
-    file.open ("./../resultados/gananciosa.csv", ios_base::app);
+    file.open ("./../resultados/"+arquivo+".csv", ios_base::app);
     file << to_string(n)+","+to_string(c)+","+to_string(tempo)+","+to_string(((float)t)/CLOCKS_PER_SEC)+","+to_string(maratona.size()) << endl;
     file.close();
 
