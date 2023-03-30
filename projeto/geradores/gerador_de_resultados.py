@@ -1,5 +1,4 @@
 import sys
-import os
 import subprocess
 
 # Define o caminho para o arquivo executável das heurísticas
@@ -10,7 +9,7 @@ resultados = "./../resultados/"+sys.argv[1]+"_"+sys.argv[2]+".csv"
 
 # Adiciona o nome das colunas ao arquivo de resposta
 with open(resultados, "w") as f:
-    f.write("n_filmes,n_categorias,t_restante,t_execucao,n_filmes,\n")
+    f.write("n_filmes,n_categorias,t_restante,t_execucao,v_filmes\n")
     
 # Executa o arquivo várias vezes uma vez para cada quantidade de filmes    
 for j in range(1000, 50000, 1000):
