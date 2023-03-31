@@ -3,6 +3,8 @@
 #include <fstream>
 #include <vector>
 #include <algorithm>
+#include <random>
+#include <chrono>
 
 using namespace std;
 
@@ -14,6 +16,11 @@ int main(){
         double lat;
         double log;
     };
+
+    // geração da seed para as buscas aleatórias
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine generator (seed);
+    std::uniform_int_distribution<int> distribution(0.0,1.0);
 
     vector<atividade> atividades;
     vector<atividade> roteiro;
@@ -29,12 +36,13 @@ int main(){
         cin >> lat >> lon;
         atividades.push_back({i+1,lat,lon});
     }
-    
-    random_shuffle(atividades.begin(), atividades.end());
 
-    atividade atv_atual = atividades[0];
+    uniform_int_distribution<int> distributionInt(0 , n-1);
+    int p = distributionInt(generator);
+
+    atividade atv_atual = atividades[p];
     roteiro.push_back(atv_atual);
-    atividades.erase(atividades.begin());
+    atividades.erase(atividades.begin()+p);
 
     int d_total = 0;
     double d_atual;

@@ -1,3 +1,3 @@
-Distância total percorrida: 2317 metros
+Distância total percorrida: 3050 metros
 Ordem das atividades:
-1 -> 7 -> 2 -> 4 -> 3 -> 8 -> 6 -> 5
+8 -> 6 -> 3 -> 4 -> 7 -> 2 -> 1 -> 5
