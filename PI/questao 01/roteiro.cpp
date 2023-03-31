@@ -29,7 +29,8 @@ int main(){
         cin >> lat >> lon;
         atividades.push_back({i+1,lat,lon});
     }
-    //colocar aleatoria aqui
+    
+    random_shuffle(atividades.begin(), atividades.end());
 
     atividade atv_atual = atividades[0];
     roteiro.push_back(atv_atual);
