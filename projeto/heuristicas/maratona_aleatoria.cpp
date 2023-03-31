@@ -133,7 +133,7 @@ int main(int argc, char *argv[]){
         cout << el.id << " ";
     }
     cout << endl;
-    // salvo os valoresde quantidade de filmes, quantidade de categorias, tempo nao alocado, tempo de execucao e quantidade de filmes alocados 
+    // salvo os valores de quantidade de filmes, quantidade de categorias, tempo nao alocado, tempo de execucao e quantidade de filmes alocados 
     // em um arquivo csv
    string arquivo = argv[1];
     ofstream file;
