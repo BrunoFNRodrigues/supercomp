@@ -1,0 +1,1 @@
+A distância total e calculada levando em cosideração apenas a distância das atividades entre a primeira e a última, sem levar em cosideração a distância entre a primeira e a última atividade.
