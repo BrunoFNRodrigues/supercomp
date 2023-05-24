@@ -16,11 +16,11 @@ struct filme{
     int categoria;
 };
 
-int melhorMaratona(int t, vector<filme> filmes, vector<int> dia, vector<int> categorias, vector<filme>& usado, vector<filme>& melhor){
+int melhorMaratona(int t, vector<filme> filmes, vector<int> dia, vector<int> categorias, vector<filme>& usado, vector<filme>& melhor, int p){
     int tempo = 0;
     int sem_i = 0, com_i = 0;
     vector<filme> filmes2 = filmes;
-    if(filmes.empty() || t == 0){
+    if(filmes.empty() || t == 0 || p == 0){
         return 0;
     }
 
@@ -37,7 +37,7 @@ int melhorMaratona(int t, vector<filme> filmes, vector<int> dia, vector<int> cat
                     categorias[filmes[0].categoria-1]--;
                     tempo = filmes[0].fim - filmes[0].inicio;
                     filmes.erase(filmes.begin());
-                    com_i = melhorMaratona(t-tempo, filmes, dia, categorias, usado, melhor);
+                    com_i = melhorMaratona(t-tempo, filmes, dia, categorias, usado, melhor, p-1);
                 }
             }
         }
@@ -45,7 +45,7 @@ int melhorMaratona(int t, vector<filme> filmes, vector<int> dia, vector<int> cat
 
 
     filmes2.erase(filmes2.begin());
-    sem_i = melhorMaratona(t, filmes2, dia, categorias, usado, melhor);
+    sem_i = melhorMaratona(t, filmes2, dia, categorias, usado, melhor, p-1);
 
     int valor_atual = usado.size();
     int valor_melhor = melhor.size();
@@ -104,9 +104,11 @@ int main(int argc, char *argv[]){
     int t = 24;
     // inicia a contagem do tempo de execução
     clock_t exec_t = clock();
-
+    /*
+    USAR UM FOR PARA DIVIDIR OS FILMES EM VARIOS BLOCOS MENORES E MONTAR UMA ARVORE PARA CADA DEPOIS FAZER UM REDUCE
+    */
     // adiciona um filme a maratona...
-    cout << "Resultado = " << melhorMaratona(t, lista, dia, categorias, usado, melhor) << endl;
+    cout << "Resultado = " << melhorMaratona(t, lista, dia, categorias, usado, melhor, 400) << endl;
     
     // termina de contar o tempo de execucao
     exec_t = clock() - exec_t;   
@@ -122,13 +124,7 @@ int main(int argc, char *argv[]){
     for(auto& el:melhor){
         cout << el.id << " ";
     }
+    cout << endl << "Tempo de execução: " << exec_t << endl;
     cout << endl;
-    // salvo os valoresde quantidade de filmes, quantidade de categorias, tempo nao alocado, tempo de execucao e quantidade de filmes alocados 
-    // em um arquivo csv
-    // string arquivo = argv[1];
-    // ofstream file;
-    // file.open ("./../resultados/"+arquivo+".csv", ios_base::app);
-    // file << to_string(n)+","+to_string(c)+","+to_string(exec_t)+","+to_string(((float)t)/CLOCKS_PER_SEC)+","+to_string(maratona.size()) << endl;
-    // file.close();
 
 }
