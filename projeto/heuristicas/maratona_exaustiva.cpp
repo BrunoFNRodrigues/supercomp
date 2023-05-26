@@ -104,9 +104,9 @@ int main(int argc, char *argv[]){
     vector<int> dia(24, 0);
     int t = 24;
     // inicia a contagem do tempo de execução
-    clock_t exec_t = clock();
-    
-    int num_threads = 4; // número desejado de threads paralelas
+    double exec_t = omp_get_wtime();
+
+    int num_threads = 8; // número desejado de threads paralelas
 
     vector<vector<filme>> resultados(num_threads); // vetor de vetores para armazenar os resultados de cada thread
 
@@ -131,15 +131,15 @@ int main(int argc, char *argv[]){
         vector<filme> thread_usado, thread_melhor;
 
         // Chamada paralela da função melhorMaratona para cada thread
-        cout << melhorMaratona(t, vector<filme>(lista.begin() + thread_start, lista.begin() + thread_end),
-                                              thread_dia, categorias, thread_usado, thread_melhor) << endl;
+        melhorMaratona(t, vector<filme>(lista.begin() + thread_start, lista.begin() + thread_end),
+                                              thread_dia, categorias, thread_usado, thread_melhor);
 
         // Armazena o resultado parcial da thread no vetor de resultados
         resultados[thread_id] = thread_melhor;
     }
 
     // termina de contar o tempo de execucao
-    exec_t = clock() - exec_t;
+    exec_t = omp_get_wtime() - exec_t;
  
     // realiza o output grafico de como ficaram alocados os filmes
     cout << "[ ";
@@ -147,16 +147,21 @@ int main(int argc, char *argv[]){
     cout << el  <<" ";
     }
     cout << "]" << endl;
-    
-    // realiza o output dos filmes que foram selecionados
+
+    //Une todos os filmes selecionados em um unico vetor
+    vector<filme> resultado;
     for (auto& el:resultados){
-        for(auto& el:el){
-                cout << el.id << " ";
-        }
-        cout << endl;
+        resultado.insert(resultado.end(), el.begin(), el.end());
+    }
+    // melhor alocação entre os filemes selecionados nas threads
+    melhorMaratona(t, resultado, dia, categorias, usado, melhor);
+
+    // realiza o output dos filmes que foram selecionados
+    for (auto& el:melhor){
+        cout << el.id << " ";
     }
  
-    cout << endl << "Tempo de execução: " << exec_t/CLOCKS_PER_SEC << " segundos" << endl;
+    cout << endl << "Tempo de execução: " << exec_t << " segundos" << endl;
     cout << endl;
 
 }
