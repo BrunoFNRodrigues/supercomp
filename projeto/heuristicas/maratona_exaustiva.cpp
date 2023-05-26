@@ -5,6 +5,7 @@
 #include <chrono>
 #include <fstream>
 #include <time.h>
+#include <omp.h>
 
 using namespace std;
 
@@ -16,11 +17,11 @@ struct filme{
     int categoria;
 };
 
-int melhorMaratona(int t, vector<filme> filmes, vector<int> dia, vector<int> categorias, vector<filme>& usado, vector<filme>& melhor, int p){
+int melhorMaratona(int t, vector<filme> filmes, vector<int> dia, vector<int> categorias, vector<filme>& usado, vector<filme>& melhor){
     int tempo = 0;
     int sem_i = 0, com_i = 0;
     vector<filme> filmes2 = filmes;
-    if(filmes.empty() || t == 0 || p == 0){
+    if(filmes.empty() || t == 0){
         return 0;
     }
 
@@ -37,7 +38,7 @@ int melhorMaratona(int t, vector<filme> filmes, vector<int> dia, vector<int> cat
                     categorias[filmes[0].categoria-1]--;
                     tempo = filmes[0].fim - filmes[0].inicio;
                     filmes.erase(filmes.begin());
-                    com_i = melhorMaratona(t-tempo, filmes, dia, categorias, usado, melhor, p-1);
+                    com_i = melhorMaratona(t-tempo, filmes, dia, categorias, usado, melhor);
                 }
             }
         }
@@ -45,7 +46,7 @@ int melhorMaratona(int t, vector<filme> filmes, vector<int> dia, vector<int> cat
 
 
     filmes2.erase(filmes2.begin());
-    sem_i = melhorMaratona(t, filmes2, dia, categorias, usado, melhor, p-1);
+    sem_i = melhorMaratona(t, filmes2, dia, categorias, usado, melhor);
 
     int valor_atual = usado.size();
     int valor_melhor = melhor.size();
@@ -104,14 +105,41 @@ int main(int argc, char *argv[]){
     int t = 24;
     // inicia a contagem do tempo de execução
     clock_t exec_t = clock();
-    /*
-    USAR UM FOR PARA DIVIDIR OS FILMES EM VARIOS BLOCOS MENORES E MONTAR UMA ARVORE PARA CADA DEPOIS FAZER UM REDUCE
-    */
-    // adiciona um filme a maratona...
-    cout << "Resultado = " << melhorMaratona(t, lista, dia, categorias, usado, melhor, 400) << endl;
     
+    int num_threads = 4; // número desejado de threads paralelas
+
+    vector<vector<filme>> resultados(num_threads); // vetor de vetores para armazenar os resultados de cada thread
+
+    // Paralelize a chamada da função melhorMaratona usando OpenMP
+    #pragma omp parallel num_threads(num_threads)
+    {
+        // Divida o número total de elementos entre as threads
+        int chunk_size = lista.size() / num_threads;
+        int chunk_remainder = lista.size() % num_threads;
+        int thread_id = omp_get_thread_num();
+
+        // Calcule os índices de início e fim para a thread atual
+        int thread_start = thread_id * chunk_size;
+        int thread_end = thread_start + chunk_size;
+
+        // A última thread lida com qualquer resto de elementos
+        if (thread_id == num_threads - 1)
+            thread_end += chunk_remainder;
+
+        // Vetores locais para cada thread
+        vector<int> thread_dia(24, 0);
+        vector<filme> thread_usado, thread_melhor;
+
+        // Chamada paralela da função melhorMaratona para cada thread
+        cout << melhorMaratona(t, vector<filme>(lista.begin() + thread_start, lista.begin() + thread_end),
+                                              thread_dia, categorias, thread_usado, thread_melhor) << endl;
+
+        // Armazena o resultado parcial da thread no vetor de resultados
+        resultados[thread_id] = thread_melhor;
+    }
+
     // termina de contar o tempo de execucao
-    exec_t = clock() - exec_t;   
+    exec_t = clock() - exec_t;
  
     // realiza o output grafico de como ficaram alocados os filmes
     cout << "[ ";
@@ -121,10 +149,14 @@ int main(int argc, char *argv[]){
     cout << "]" << endl;
     
     // realiza o output dos filmes que foram selecionados
-    for(auto& el:melhor){
-        cout << el.id << " ";
+    for (auto& el:resultados){
+        for(auto& el:el){
+                cout << el.id << " ";
+        }
+        cout << endl;
     }
-    cout << endl << "Tempo de execução: " << exec_t << endl;
+ 
+    cout << endl << "Tempo de execução: " << exec_t/CLOCKS_PER_SEC << " segundos" << endl;
     cout << endl;
 
 }
