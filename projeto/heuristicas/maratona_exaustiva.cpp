@@ -164,4 +164,12 @@ int main(int argc, char *argv[]){
     cout << endl << "Tempo de execução: " << exec_t << " segundos" << endl;
     cout << endl;
 
+    // salvo os valoresde quantidade de filmes, quantidade de categorias, tempo nao alocado, tempo de execucao e quantidade de filmes alocados 
+    // em um arquivo csv
+    string arquivo = argv[1];
+    ofstream file;
+    file.open ("./../resultados/"+arquivo+".csv", ios_base::app);
+    file << to_string(n)+","+to_string(c)+","+to_string(t)+","+to_string(exec_t)+","+to_string(melhor.size()) << endl;
+    file.close();
+
 }
