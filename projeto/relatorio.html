@@ -1,64 +1,64 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-	<meta charset="UTF-8">
-	<title>Relatório SuperComp</title>
+    <meta charset="UTF-8">
+    <title>Relatório SuperComp</title>
     <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/2539/2539785.png">
 </head>
 <body>
-	<header>
-		<h1>Super Computação - Relatório 2023.1</h1>
+    <header>
+        <h1>Super Computação - Relatório 2023.1</h1>
         <p>Autor: Bruno Freitas do Nascimento Rodrigues</p>
         <hr>
-	</header>
-	
-	<main>
-		<div class="aviso">
-            <p>Todos os códigos expostos nesse relatório podem ser acessados em: git</p>
+    </header>
+   
+    <main>
+        <div class="aviso">
+            <p>Todos os códigos expostos nesse relatório podem ser acessados em: <a href="https://github.com/BrunoFNRodrigues/supercomp-projeto.git">https://github.com/BrunoFNRodrigues/supercomp-projeto.git</a></p>
         </div>
-        
+       
         <div class="implementacao">
             <h2>Implementação:</h2>
             <p>As heurísticas, gananciosa e aleatória, foram implementadas seguindo a seguinte lógica:</p>
             <ul>
                 <li>Tratamento das entradas</li>
                 <li>Aplicação das heurísticas</li>
-                <li>Tratamento da saída dos resultados</li>
+                <li>Tratamento dos resultados</li>
             </ul>
             <div class="entradas">
                 <h3>Tratamento das entradas:</h3>
-                <p> A formatação experada para o arquivo de input é na primeira linha quantidade de filmes 
-                    quantidade de categorias, a segunda linha ser número de a quantidade de filmes em 
+                <p> A formatação esperada para o arquivo de input é na primeira linha quantidade de filmes
+                    quantidade de categorias, a segunda linha ser número de a quantidade de filmes em
                     cada categoria e as demais linhas os filmes com hora que começa, hora que acaba e categoria.
                 </p>
-                <p> Assim as entradas foram tradas seguinto a lógica do código abaixo, para ambas as heurísticas:</p>
+                <p> Assim as entradas foram tratadas seguindo a lógica do código abaixo, para ambas as heurísticas:</p>
                 <img src="./imgs/entradas.png"/>
-                <p>A lógica consiste em ler o arquivo em loop e gravar as entradas no vator lista, se o valor de inicio
-                     for menor ou igual que o do fim ela não sofre alterção, no caso contrario o valor de fim dela e modicado para 24, 
-                     o ajuste é realizado dessa forma, pois filmes que ultrapasem o limite de um dia a parte dele que passou limete não é
-                     considerada para aquele dia de maratona. Caso houvesse mais um dia de maratona esse periodo seria considerado nele.
+                <p>A lógica consiste em ler o arquivo em loop e gravar as entradas no vetor lista, se o valor de início
+                     for menor ou igual que o do fim ela não sofre alteração, no caso contrário o valor de fim dela e modificado para 24,
+                     o ajuste é realizado dessa forma, pois filmes que ultrapassem o limite de um dia a parte dele que passou limite não é
+                     considerada para aquele dia de maratona. Caso houvesse mais um dia de maratona esse período seria considerado .
                 </p>
             </div>
             <div class="heuristicas">
                 <h3>Aplicação das heurísticas:</h3>
-                <p>Para a aplicação da heurística gananciosa o sua invariante é a ordenação do vetor de filmes com base no horário de termino,
+                <p>Para a aplicação da heurística gananciosa o sua invariante é a ordenação do vetor de filmes com base no horário de término,
                     como pode ser visto na imagem abaixo:
                 </p>
                 <img src="./imgs/invariante_g.png"/>
-                <p>Para a aleatória a sua invariante é ter 25% de chance de adicionar um filme qualquer a mais, como está presente no trecgo de
+                <p>Para a aleatória a sua invariante é ter 25% de chance de adicionar um filme qualquer a mais, como está presente no trecho de
                     código abaixo:
                 </p>
                 <img src="./imgs/invariante_a.png">
             </div>
             <div class="saidas">
-                <h3>Tratamento da saída dos resultados:</h3>
-                <p>A formatação da saída segue a seguinte o lógica, ambos programas imprimem no console uma representação da alocação dos filmes no dia
-                    e também quais filmes foram escolhidos. Além disso eles salvam os valores de quantidade de filmes, quantidade de categorias, 
+                <h3>Tratamento dos resultados:</h3>
+                <p>A formatação da saída segue a seguinte o lógica, ambos programas imprime no console uma representação da alocação dos filmes no dia
+                    e também quais filmes foram escolhidos. Além disso eles salvam os valores de quantidade de filmes, quantidade de categorias,
                     tempo não alocado, tempo de execução e quantidade de filmes alocados em um arquivo csv, o código responsável por isso pode ser visto abaixo:
                 </p>
                 <img src="./imgs/saida.png"/>
                 <p>A saída do terminal a primeira linha pode ser interpretada da seguinte forma, os valores entre [] representam as horas do dia, todos os números diferentes de
-                    zero são ids dos filmes e eles representam que a hora do vetor foi prenchida pelo filme com esse id, o zero significa que aquela hora não 
+                    zero são ids dos filmes e eles representam que a hora do vetor foi preenchida pelo filme com esse id, o zero significa que aquela hora não
                     foi preenchida com nenhum filme. A segunda linha no terminal são os filmes que forma escolhidos.
                 </p>
                 <img src="./imgs/console.png"/>
@@ -66,11 +66,30 @@
             <hr>
         </div>
 
+
         <div class="valgrind">
             <h2>Profiling:</h2>
-            <p>O profiling heurísticas gananciosa teve os seguintes pontos de interesse:</p>
+            <p>O profiling da heurísticas gananciosa teve os seguintes pontos de interesse:</p>
+            <img src="./imgs/pg1.png"/>
+            <p>O primeiro foi essa chamada de função que totaliza mais 32 milhões de instruções, o ponto que chama a atenção é o volume de instruções, contudo não a muito que possa ser
+                feito para melhorar isso, uma vez  que essa chamada de função está associada a leitura dos inputs e estruturação deles em um vetor, o que fundamental para a resolução do
+                problema.
+            </p>
+            <p>Outro ponto de interesse é a sequência de condições para um filme ser adicionado, principalmente a condição que envolve o valor absoluto da diferença do começo e do fim do filme,
+                O maior número de instruções nesse trecho deve estar associado a o cálculo do valor absoluto.  
+            </p>
+            <img src="./imgs/pg2.png"/>
+            <p>Por último, um ponto interessante para reparar e essa chamada do método count, que envolve a leitura do completa do vetor, e tendo em vista que ele está dentro de um for pode trazer
+                alguns problemas de desempenho.
+            </p>
+            <img src="./imgs/pg3.png"/>
+            <p>Para a heurística aleatória os mesmos pontos assimas se apresentam, com adição do trecho abaixo que apresenta uma situação semelhante a segunda imagem apresentada que possui um valor
+                mais elevado de instruções devido ao cálculo do valor absoluto.
+            </p>
+            <img src="./imgs/pa1.png"/>
             <hr>
         </div>
+
 
         <div class="resultados">
             <h2>Resultados:</h2>
@@ -82,7 +101,7 @@
                     <img src="./graficos/comparacao/ff.png"/>
                 </div>
                 <p>Observando os gráficos acima é nítido que para a heurística aleatória quantidade de filmes não impacta quantidade filmes vista,
-                    enquanto para a gananciosa impacta, contudo apenas até 1000 filmes acima desse valor a pouca variação.
+                    enquanto para a gananciosa impacta, contudo apenas até 1000 filmes acima desse valor têm pouca variação.
                 </p>
             </div>
             <div class="analise">
@@ -92,8 +111,8 @@
                     <img src="./graficos/gananciosa/cfg.png"/>
                     <img src="./graficos/comparacao/cf.png"/>
                 </div>
-                <p>Agora analisando a quantidade assisitida em relação a quantidade de categorias é claro que ambas as heurísticas sem beneficiam
-                    de uma maior quantidade de categorias, entretanto a gananciosa se tem um benéficio maior conseguindo chegar a 24 filmes.
+                <p>Agora analisando a quantidade assistida em relação a quantidade de categorias é claro que ambas as heurísticas sem beneficiam
+                    de uma maior quantidade de categorias, entretanto a gananciosa tem um benefício maior conseguindo chegar a 24 filmes.
                 </p>
             </div>
             <div class="analise">
@@ -115,13 +134,68 @@
                     <img src="./graficos/comparacao/cte.png"/>
                 </div>
                 <p>Agora analisando o tempo de execução em relação a quantidade de categorias, os resultados mostram que a quantidade de categorias
-                    é pouca impactante para ambas as heurísticas, afetando um pouco a gananciosa quando poucas categorias, mas apartir de 8 categorias
+                    é pouca impactante para ambas as heurísticas, afetando um pouco a gananciosa quando poucas categorias, mas a partir de 8 categorias
                     não ocorrem mudanças significativas, vale ressaltar que a aleatória apresenta uma variação maior de resultados, porém não é apresentado
                     um padrão que indique que a quantidade de categorias esteja afetando de forma positiva ou negativa os resultados.
                 </p>
             </div>
         </div>
-	</main>
-	
+        <hr>
+        <div class="exaustiva">
+            <h1>Busca Exaustiva Paralelizada (OpenMP e Thrust)</h1>
+            <div class="entradas">
+                <h2>Entradas:</h2>
+                <p>
+                    Para as soluções exaustivas a formatação da entrada continua a mesma formatação de dois números na primeira linha representanda a quantidade de
+                    filmes e categorias, a segunda sendo a capacidade de cada categoria e as demais os filmes, sendo representados por três números hora de início, hora de
+                    termino e categoria, como pode ser visto no exemplo abaixo:
+                </p>
+                <pre>
+                    <code>
+5 4
+1 3 2 3
+2 6 3
+2 5 1
+4 7 4
+19 23 3
+20 0 2
+                    </code>
+                </pre>
+                <p>
+                    Contudo devido a restrição do tamanho de vetor que um núcleo da GPU suporta as entradas tiveram o seu range de filmes reduzido de 1000 até 49000, para 1 até 30,
+                    e de categorias de 1 até 50, para 1 até 9.
+                </p>
+            </div>
+            <div class="implementacao">
+                <h2>Implementação OpenMP:</h2>
+                <p>
+                    A abortagem tomada para resolver o problema de alocação usando OpenMP foi, primeiramente foi criada
+                    uma função recursiva (<code>melhorMaratona</code>) que monta uma árvore de decisão, ou seja, ela cria uma alocação,
+                    na qual o filme foi escolhido e uma que ele não foi, assim sucessivamente até cobrir todas as possibilidades. 
+                    Então para a paralelização é criada uma zona pararela em que são criadas 8 threads com e cada thread vai executar
+                    árvore de busca para 1/8 das entradas e essa alocação vai ser salva em um vetor compartilhado pelas threads. Após
+                    as threads terminarem de executar a busca no seu pedaço dos dados, todos os filmes selecionasdos pelas soluções ótimas
+                    de cada uma são passados para função de busca que agora vai executar em um única thread que vai buscar para ver qual é
+                    a melhor alocação possível para esses filmes. 
+                </p>
+                <h2>Implementação Thrust:</h2>
+                <p>
+                    A abortagem para solucionar a alocação de filmes por Thrust em uma <code>transform</code> que recebe um vetor com 
+                    tamanho de número de filmes ao quadrado, em que o valor de cada posição coresponde ao indice, por exemplo <code>vector[5]=5</code>
+                    e um functor, que realiza a alocação dos filmes baseado no valor da posição do vetor passado, como por exemplo, se ele o fuctor está
+                    na posição com o valor 5 então ele pegar esse valor, como um binário 0101, e irá interpretar esse número binário como sendo uma configuração
+                    de quais filmes devem ser solucionados, nessa caso são o primeiro e o terceiro filme. Assim, seguindo essa lógica a GPU irá realizar esse calculo
+                    para todas as configurações possiveis de filmes.  
+                </p>
+            </div>
+
+            <div class="resultados">
+            </div>
+        </div>
+    </main>
+   
 </body>
 </html>
+
+
+
