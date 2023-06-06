@@ -25,14 +25,6 @@
 
 using namespace std;
 
-//declaracao a struct para os filmes
-struct filme{
-    int id;
-    int inicio;
-    int fim;
-    int categoria;
-};
-
 struct bestMaraton
 {  
     int N;
@@ -45,19 +37,18 @@ struct bestMaraton
     N(N_), M(M_), L(L_), start_times(start_times_), end_times(end_times_), categories(categories_) {}
     __host__ __device__
     int operator()(const int& com) {
-        int L_aux[50];
+        int L_copy[50];
         for (int i = 0; i < M; i++){
-            L_aux[i] = *(L+i);
+            L_copy[i] = *(L+i);
         }
-        printf("%d\n", com);
         int max_count = 0;
         int time = 24;
         for (int i = 1; i < N; i++){
             if (com & (1 << i)){
-                if (L_aux[i-1] > 0){
+                if (L_copy[i-1] > 0){
                     if(end_times[i-1] <= start_times[i]){
                         // diminui a quantidade de filmes que ainda podem ser colocadas naquela categoria
-                        L_aux[categories[i-1]-1]--;
+                        L_copy[categories[i-1]-1]--;
                         time -= end_times[i-1] - start_times[i-1];
                         max_count++;
                     }
@@ -115,8 +106,6 @@ int main(int argc, char *argv[]){
             max_count = host_com[i];
         }
     }
-
-    cout << "Foram vistos " << max_count << " filmes." << endl;
 
     // termina de contar o tempo de execucao
     t = clock() - t;   
