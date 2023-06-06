@@ -101,7 +101,7 @@ int main(int argc, char *argv[]){
     clock_t t = clock();
 
 
-    thrust::for_each(thrust::device,device_com.begin(), device_com.end(), device_com.begin(), bestMaraton(N, M, raw_pointer_cast(L.data()),
+    thrust::transform(device_com.begin(), device_com.end(), device_com.begin(), bestMaraton(N, M, raw_pointer_cast(L.data()),
     raw_pointer_cast(start_times.data()), raw_pointer_cast(end_times.data()), raw_pointer_cast(categories.data())));
     
 
