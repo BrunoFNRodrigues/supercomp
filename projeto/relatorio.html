@@ -176,8 +176,10 @@
                     árvore de busca para 1/8 das entradas e essa alocação vai ser salva em um vetor compartilhado pelas threads. Após
                     as threads terminarem de executar a busca no seu pedaço dos dados, todos os filmes selecionasdos pelas soluções ótimas
                     de cada uma são passados para função de busca que agora vai executar em um única thread que vai buscar para ver qual é
-                    a melhor alocação possível para esses filmes. 
+                    a melhor alocação possível para esses filmes. O ponto de inflecção que determina o paralelismo da solução pode ser visto abaixo:
                 </p>
+                <img src="./imgs/invariante_e.png"/>
+                <p>Região paralela do código.</p>
                 <h2>Implementação Thrust:</h2>
                 <p>
                     A abortagem para solucionar a alocação de filmes por Thrust em uma <code>transform</code> que recebe um vetor com 
@@ -185,17 +187,21 @@
                     e um functor, que realiza a alocação dos filmes baseado no valor da posição do vetor passado, como por exemplo, se ele o fuctor está
                     na posição com o valor 5 então ele pegar esse valor, como um binário 0101, e irá interpretar esse número binário como sendo uma configuração
                     de quais filmes devem ser solucionados, nessa caso são o primeiro e o terceiro filme. Assim, seguindo essa lógica a GPU irá realizar esse calculo
-                    para todas as configurações possiveis de filmes.  
+                    para todas as configurações possiveis de filmes. O ponto que define o paralelismo da solução é a chamada da função transform com fuctor, como pode ser
+                    visto abaixo:
                 </p>
+                <img src="./imgs/gpu_transform.png"/>
+                <p>Chamada da função Thrust::transform.</p>
+                <img src="./imgs/gpu_functor.png"/>
+                <p>Functor responsável pela alocação.</p>
             </div>
 
             <div class="resultados">
+                
             </div>
         </div>
     </main>
    
 </body>
 </html>
-
-
 
