@@ -76,8 +76,21 @@ int main(int argc, char *argv[]){
         std::cin >> host_L[i];
     }
 
+    // horario de inicio, fim e a categoria do filme
+    int start, end, categorie;
+
     for (int i = 0; i < N; i++) {
-        std::cin >> host_start_times[i] >> host_end_times[i] >> host_categories[i];
+        std::cin >> start >> end >> categorie;
+        host_start_times[i]
+        host_end_times[i]
+        host_categories[i]
+        // realiza o ajuste horario caso um filme acaba em horario menor que o de inicio para ele acabar as 24
+        if (end < start){
+            end = 24;
+        } 
+        host_start_times[i] = start;
+        host_end_times[i] = end;
+        host_categories[i] = categorie;
     }
 
     thrust::device_vector<int> device_com(pow(2, N));
